@@ -8,35 +8,39 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
  * Cette servlet récupère un flux et le décode.
  */
-@WebServlet(value="/ServletEncode")
-public class ServletEncode extends HttpServlet
-{
-	private static final long serialVersionUID = 2561098435378867777L;
+@WebServlet(value = "/ServletEncode")
+public class ServletEncode extends HttpServlet {
 
-	@Override
-	protected void doGet (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-		{
-		/*----- Lecture de la requête en UTF-8 -----*/
-		request.setCharacterEncoding("UTF-8");
+  private static final long serialVersionUID = 2561098435378867777L;
 
-		/*----- Type de la réponse -----*/
-		response.setContentType("application/xml;charset=UTF-8");
-		response.setCharacterEncoding("UTF-8");
-		try (PrintWriter out = response.getWriter())
-			{
-			String ch = request.getParameter("texte");
+  @Override
+  protected void doGet(
+    HttpServletRequest request,
+    HttpServletResponse response
+  ) throws ServletException, IOException {
+    /*----- Lecture de la requête en UTF-8 -----*/
+    request.setCharacterEncoding("UTF-8");
 
-			/*----- Ecriture de la page xml -----*/
-			out.println("<?xml version=\"1.0\"?>");
-			out.println("<msg><![CDATA[" + ch + "]]></msg>");
-			}
-		}
+    /*----- Type de la réponse -----*/
+    response.setContentType("application/xml;charset=UTF-8");
+    response.setCharacterEncoding("UTF-8");
+    try (PrintWriter out = response.getWriter()) {
+      String ch = request.getParameter("texte");
 
-	@Override
-	protected void doPost (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { doGet(request, response); }
+      /*----- Ecriture de la page xml -----*/
+      out.println("<?xml version=\"1.0\"?>");
+      out.println("<msg><![CDATA[" + ch + "]]></msg>");
+    }
+  }
 
-} /*----- Fin de la servlet ServletEncode -----*/
+  @Override
+  protected void doPost(
+    HttpServletRequest request,
+    HttpServletResponse response
+  ) throws ServletException, IOException {
+    doGet(request, response);
+  }
+}/*----- Fin de la servlet ServletEncode -----*/

@@ -11,48 +11,51 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
  * Interroge la base de données et retourne la liste des citations
  * sous format XML.
  */
-@WebServlet(value="/ServletCitation")
-public class ServletCitation extends HttpServlet
-{
-	private static final long serialVersionUID = 5558284359009356382L;
+@WebServlet(value = "/ServletCitation")
+public class ServletCitation extends HttpServlet {
 
-	@Override
-	protected void doGet (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-		{
-		/*----- Type de la réponse -----*/
-		response.setContentType("application/xml;charset=UTF-8");
-		response.setCharacterEncoding("UTF-8");
-		try (PrintWriter out = response.getWriter())
-			{
-			/*----- Ecriture de la page XML -----*/
-			out.println("<?xml version=\"1.0\"?>");
-			out.println("<liste_citation>");
+  private static final long serialVersionUID = 5558284359009356382L;
 
-			/*----- Récupération des paramètres -----*/
-			String nom = request.getParameter("nomauteur");
+  @Override
+  protected void doGet(
+    HttpServletRequest request,
+    HttpServletResponse response
+  ) throws ServletException, IOException {
+    /*----- Type de la réponse -----*/
+    response.setContentType("application/xml;charset=UTF-8");
+    response.setCharacterEncoding("UTF-8");
+    try (PrintWriter out = response.getWriter()) {
+      /*----- Ecriture de la page XML -----*/
+      out.println("<?xml version=\"1.0\"?>");
+      out.println("<liste_citation>");
 
-			try {
-				/*----- Lecture de liste de mots dans la BD -----*/
-				ArrayList<String> lCitations = Bd.lireCitations(nom);
+      /*----- Récupération des paramètres -----*/
+      String nom = request.getParameter("nomauteur");
 
-				for (String citation : lCitations)
-					out.println("<citation>" + citation + "</citation>");
-				}
-			catch (ClassNotFoundException | SQLException ex)
-				{
-				out.println("<citation>Erreur - " + ex.getMessage() + "</citation>");
-				}
+      try {
+        /*----- Lecture de liste de mots dans la BD -----*/
+        ArrayList<String> lCitations = Bd.lireCitations(nom);
 
-			out.println("</liste_citation>");
-			}
-		}
+        for (String citation : lCitations) out.println(
+          "<citation>" + citation + "</citation>"
+        );
+      } catch (ClassNotFoundException | SQLException ex) {
+        out.println("<citation>Erreur - " + ex.getMessage() + "</citation>");
+      }
 
-	@Override
-	protected void doPost (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { doGet(request, response); }
+      out.println("</liste_citation>");
+    }
+  }
 
-} /*----- Fin de la servlet ServletCitation -----*/
+  @Override
+  protected void doPost(
+    HttpServletRequest request,
+    HttpServletResponse response
+  ) throws ServletException, IOException {
+    doGet(request, response);
+  }
+}/*----- Fin de la servlet ServletCitation -----*/
