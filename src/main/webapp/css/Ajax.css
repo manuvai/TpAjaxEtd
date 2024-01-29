@@ -1,0 +1,56 @@
+/*---------------*/
+/* Style du site */
+/*---------------*/
+
+html {
+	height: 100%;
+}
+
+/*----- Définition des marges et de la couleur de fond des pages -----*/
+body {
+	margin-left: 20px;
+	margin-top: 20px;
+	margin-right: 20px;
+	margin-bottom: 20px;
+	background-color: #FFFFFF;
+	color: #000000;
+}
+
+/*----- Mise en forme de la balise h3 -----*/
+h1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 24px;
+}
+
+/*----- Formulaire -----*/
+form {
+	background-color: #F3F0ED;
+}
+
+/*----- Style pour le liens HTML -----*/
+a:link, a:visited {
+	text-decoration: none;
+}
+
+a:hover {
+	background-color: #f6fbfc;
+	text-decoration: underline;
+}
+
+.saisie {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	width: 200px;
+}
+
+.boite {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	display: none;
+	width: 198px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #7F9DB9;
+	margin-top: 1px;
+	padding: 2px;
+}
