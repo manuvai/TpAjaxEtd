@@ -93,7 +93,7 @@ function l_citations() {
 	
 	let selectedAuteur = listeAuteurs.options[listeAuteurs.selectedIndex].text;
 		
-	get("ServletCitation?nomauteur=" + encodeURIcomponent(selectedAuteur), xhr => {
+	get("ServletCitation?nomauteur=" + encodeURIComponent(selectedAuteur), xhr => {
 		let responseXML = xhr.responseXML;
 		let citations = responseXML.getElementsByTagName("citation")
 		
@@ -126,7 +126,7 @@ function processKey() {
 	}
 	
 	
-	get("ServletGoogle?saisie=" + encodeURIcomponent(saisie), xhr => {
+	get("ServletGoogle?saisie=" + encodeURIComponent(saisie), xhr => {
 		let responseXML = xhr.responseXML;
 		let propositions = responseXML.getElementsByTagName("proposition")
 		
@@ -141,7 +141,13 @@ function processKey() {
 				console.log(element)
 				console.log(proposition)
 				let elementLi = document.createElement("li")
-				elementLi.innerHTML = proposition
+				
+				let link = document.createElement("a")
+				link.setAttribute("href", "https://www.google.com/search?q=" + encodeURIComponent(proposition))
+
+				link.innerHTML = proposition
+
+				elementLi.appendChild(link)
 				listeUl.appendChild(elementLi)
 			
 		})
