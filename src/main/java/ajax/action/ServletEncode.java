@@ -26,6 +26,7 @@ public class ServletEncode extends HttpServlet {
 
     /*----- Type de la réponse -----*/
     response.setContentType("application/xml;charset=UTF-8");
+    response.addHeader("Access-Control-Allow-Origin", "http://localhost:5500");
     response.setCharacterEncoding("UTF-8");
     try (PrintWriter out = response.getWriter()) {
       String ch = request.getParameter("texte");

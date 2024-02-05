@@ -26,10 +26,8 @@ public class ServletGoogle extends HttpServlet {
 			) throws ServletException, IOException {
 		String saisie = request.getParameter("saisie");
 		
-
-	    request.setCharacterEncoding("UTF-8");
-
 	    response.setContentType("application/xml;charset=UTF-8");
+	    response.addHeader("Access-Control-Allow-Origin", "http://localhost:5500");
 	    response.setCharacterEncoding("UTF-8");
 
 	    List<String> propositions = new ArrayList<>();
@@ -40,12 +38,10 @@ public class ServletGoogle extends HttpServlet {
 		}
 		
 		propositions = propositions.stream()
-				.map(prop -> "<proposition>" + prop + "</proposition>")
+				.map(prop -> "<proposition><![CDATA[" + prop + "]]></proposition>")
 				.collect(Collectors.toList());
 	    
 	    try (PrintWriter out = response.getWriter()) {
-		  String ch = request.getParameter("texte");
-		
 		  /*----- Ecriture de la page xml -----*/
 		  out.println("<?xml version=\"1.0\"?>");
 		  out.println("<propositions>");

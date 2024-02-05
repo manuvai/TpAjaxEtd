@@ -36,10 +36,16 @@ function post(url, onSuccess) {
 
 function ajax(verb, url, onSuccess, onFail = null) {
 	// Objet XMLHttpRequest.
-	var xhr = new XMLHttpRequest();
-	xhr.open(verb, url);
+	let xhr = new XMLHttpRequest();
 
-	xhr.onload = function() {
+	url = "http://localhost:8080/TpAjaxEtd/" + url;
+
+	xhr.open(verb, url);
+	if ("POST" == verb) {
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	}
+
+	xhr.onload = () => {
 		if (xhr.status === 200) {
 			onSuccess(xhr);
 		}
@@ -131,15 +137,12 @@ function processKey() {
 		let propositions = responseXML.getElementsByTagName("proposition")
 		
 		resultZone.innerHTML = ""
-		console.log(propositions)
 		
 		let listeUl = document.createElement("ul")
 		
 		Array.from(propositions)
 			.forEach(element => {
-				let proposition = element.innerHTML
-				console.log(element)
-				console.log(proposition)
+				let proposition = element.firstChild.nodeValue
 				let elementLi = document.createElement("li")
 				
 				let link = document.createElement("a")
@@ -152,7 +155,7 @@ function processKey() {
 			
 		})
 		resultZone.appendChild(listeUl)
-		resultZone.classList.remove("boite")
+		resultZone.style.display = "block"
 		
 	})
 }
@@ -185,6 +188,117 @@ function testEncodeUrl() {
 	xhr.send(param);
 }
 
+function computeExists(event) {
+	const srcElement = event.srcElement;
+	let value = srcElement.value;
+
+	let button = document.querySelector("#formAdd div input[type='button']");
+
+	let nextSpan = srcElement.nextSibling
+
+	if (nextSpan == null) {
+		let newSpan = document.createElement("span")
+		srcElement.insertAdjacentElement("afterend", newSpan)
+		nextSpan = newSpan
+	}
+
+	if (value.length == 0) {
+		button.setAttribute("disabled", "disabled")
+		nextSpan.innerHTML = ""
+		return;
+	}
+
+	get("ServletAdd?saisie=" + encodeURIComponent(value), xhr => {
+		let message = xhr.responseXML.getElementsByTagName("message")[0]
+		let messageStatus = message.getAttribute("statut")
+		let messageText = message.innerHTML
+
+		if (messageStatus == 200) {
+			button.removeAttribute("disabled")
+		} else {
+			button.setAttribute("disabled", "disabled")
+			
+		}
+		nextSpan.innerHTML = messageText
+
+	})
+}
+
+function addMessage() {
+	let inputs = document.querySelectorAll("#formAdd div input[type='text']");
+	let inputTyped = inputs[inputs.length - 1]
+
+	let value = inputTyped.value
+	
+	let nextSpan = inputTyped.nextSibling
+
+	let button = document.querySelector("#formAdd div input[type='button']");
+	if (nextSpan == null) {
+		let newSpan = document.createElement("span")
+		srcElement.insertAdjacentElement("afterend", newSpan)
+		nextSpan = newSpan
+	}
+
+	if (value.length == 0) {
+		button.setAttribute("disabled", "disabled")
+		nextSpan.innerHTML = ""
+		return;
+	}
+
+	post("ServletAdd?saisie=" + encodeURIComponent(value), xhr => {
+		let message = getMessage(xhr)
+
+		let status = getStatus(xhr)
+
+		if (status != 200) {
+			nextSpan.innerHTML = message
+		} else {
+
+			let newSpan = document.createElement("span")
+			newSpan.innerHTML = message
+	
+			let div = document.createElement("div")
+			let newInput = document.createElement("input")
+			newInput.disabled = true
+			newInput.value = value
+			div.appendChild(newInput)
+			div.appendChild(newSpan)
+	
+			inputTyped.insertAdjacentElement("beforebegin", div)
+			inputTyped.value = ""
+			nextSpan.innerHTML = ""
+			inputTyped.focus()
+
+		}
+	})
+}
+
+function getMessage(xhr) {
+	let elementNode = getTagElement(xhr, "message");
+
+	return elementNode == null
+		? null
+		: elementNode.innerHTML;
+}
+
+function getStatus(xhr) {
+	let elementNode = getTagElement(xhr, "status");
+
+	return elementNode == null
+		? null
+		: elementNode.innerHTML;
+}
+
+function getTagElement(xhr, tagName) {
+
+	let elements = xhr.responseXML
+		.getElementsByTagName(tagName)
+
+	return elements == null
+		? null
+		: elements[0]
+}
+
 
 /**
  * Lancement après le chargement du DOM.
@@ -206,5 +320,10 @@ document.addEventListener("DOMContentLoaded", () => {
 	document.getElementById("saisie")
 		.addEventListener("input", processKey)
 
+	document.querySelector("#formAdd div input[type='text']")
+		.addEventListener("keyup", computeExists)
+
+	document.querySelector("#formAdd div input[type='button']")
+		.addEventListener("click", addMessage)
 
 });

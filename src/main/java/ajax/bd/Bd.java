@@ -59,6 +59,46 @@ public class Bd {
     }
   }
 
+  public static boolean isTexteAlreadyInTable(String saisie) throws ClassNotFoundException, SQLException {
+	  boolean isTexteAlreadyInTable = Objects.nonNull(saisie) 
+			  && !"".equals(saisie);
+	  
+	  if (isTexteAlreadyInTable) {
+	      connexion();
+	      String sql = "SELECT Texte " 
+	    		  + "FROM Mot " 
+	    		  + "WHERE Texte = ?";
+
+	      PreparedStatement st = cx.prepareStatement(sql);
+	      st.setString(1, saisie);
+
+	      ResultSet resultSet = st.executeQuery();
+	      
+	      isTexteAlreadyInTable = isTexteAlreadyInTable && resultSet.next();
+		  
+	  }
+	  
+	  
+	  return isTexteAlreadyInTable;
+  }
+  
+  public static int ajouterMessage(String saisie) throws ClassNotFoundException, SQLException {
+	  int resultId = 0;
+	  
+	  if (Objects.nonNull(saisie)) {
+		  connexion();
+		  String sql = "INSERT INTO Mot (Texte) "
+		  		+ "VALUES (?)";
+		  PreparedStatement statement = cx.prepareStatement(sql);
+		  statement.setString(1, saisie);
+
+		  resultId = statement.executeUpdate();
+		  
+	  }
+	  
+	  return resultId;
+  }
+  
   public static List<String> recupererPropositions(String saisie)
     throws ClassNotFoundException, SQLException {
     List<String> propositions = new ArrayList<>();

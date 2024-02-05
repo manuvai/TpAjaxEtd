@@ -27,6 +27,7 @@ public class ServletCitation extends HttpServlet {
   ) throws ServletException, IOException {
     /*----- Type de la réponse -----*/
     response.setContentType("application/xml;charset=UTF-8");
+    response.addHeader("Access-Control-Allow-Origin", "http://localhost:5500");
     response.setCharacterEncoding("UTF-8");
     try (PrintWriter out = response.getWriter()) {
       /*----- Ecriture de la page XML -----*/
