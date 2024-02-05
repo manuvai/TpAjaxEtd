@@ -268,6 +268,7 @@ function addMessage() {
 			inputTyped.value = ""
 			nextSpan.innerHTML = ""
 			inputTyped.focus()
+			processKey()
 
 		}
 	})
