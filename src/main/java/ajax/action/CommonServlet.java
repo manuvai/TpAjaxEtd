@@ -15,6 +15,8 @@ public abstract class CommonServlet extends HttpServlet {
 	protected void doGet(
 		    HttpServletRequest request,
 		    HttpServletResponse response) throws ServletException, IOException {
+
+	    request.setCharacterEncoding("UTF-8");
 		
 		xmlContent(response);
 		
@@ -26,6 +28,8 @@ public abstract class CommonServlet extends HttpServlet {
 	protected void doPost(
 		    HttpServletRequest request,
 		    HttpServletResponse response) throws ServletException, IOException {
+
+	    request.setCharacterEncoding("UTF-8");
 		xmlContent(response);
 		responsePost(request, response);
 	}
@@ -36,7 +40,6 @@ public abstract class CommonServlet extends HttpServlet {
 		if (Objects.isNull(response)) {
 			return;
 		}
-
 	    response.setContentType("application/xml;charset=UTF-8");
 	    response.addHeader("Access-Control-Allow-Origin", "*");
 	    response.setCharacterEncoding("UTF-8");

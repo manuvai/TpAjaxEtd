@@ -9,27 +9,22 @@ import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ajax.bd.Bd;
 
 @WebServlet("/ServletGoogle")
-public class ServletGoogle extends HttpServlet {
+public class ServletGoogle extends CommonServlet {
 
 	private static final long serialVersionUID = -1141444653853903199L;
 
-	protected void doGet(
+	protected void responseGet(
 			HttpServletRequest request,
 			HttpServletResponse response
 			) throws ServletException, IOException {
 		String saisie = request.getParameter("saisie");
 		
-	    response.setContentType("application/xml;charset=UTF-8");
-	    response.addHeader("Access-Control-Allow-Origin", "http://localhost:5500");
-	    response.setCharacterEncoding("UTF-8");
-
 	    List<String> propositions = new ArrayList<>();
 		try {
 			propositions = Bd.recupererPropositions(saisie);
@@ -51,7 +46,7 @@ public class ServletGoogle extends HttpServlet {
 		
 	}
 
-	protected void doPost(
+	protected void responsePost(
 			HttpServletRequest request,
 			HttpServletResponse response
 			) throws ServletException, IOException {

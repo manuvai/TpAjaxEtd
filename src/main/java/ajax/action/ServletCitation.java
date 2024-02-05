@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,19 +15,16 @@ import javax.servlet.http.HttpServletResponse;
  * sous format XML.
  */
 @WebServlet(value = "/ServletCitation")
-public class ServletCitation extends HttpServlet {
+public class ServletCitation extends CommonServlet {
 
   private static final long serialVersionUID = 5558284359009356382L;
 
   @Override
-  protected void doGet(
+  protected void responseGet(
     HttpServletRequest request,
     HttpServletResponse response
   ) throws ServletException, IOException {
     /*----- Type de la réponse -----*/
-    response.setContentType("application/xml;charset=UTF-8");
-    response.addHeader("Access-Control-Allow-Origin", "http://localhost:5500");
-    response.setCharacterEncoding("UTF-8");
     try (PrintWriter out = response.getWriter()) {
       /*----- Ecriture de la page XML -----*/
       out.println("<?xml version=\"1.0\"?>");
@@ -53,7 +49,7 @@ public class ServletCitation extends HttpServlet {
   }
 
   @Override
-  protected void doPost(
+  protected void responsePost(
     HttpServletRequest request,
     HttpServletResponse response
   ) throws ServletException, IOException {
