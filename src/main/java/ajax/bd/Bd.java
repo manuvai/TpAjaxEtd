@@ -98,6 +98,23 @@ public class Bd {
 	  
 	  return resultId;
   }
+
+  public static int deleteMot(String mot) throws ClassNotFoundException, SQLException {
+	  int result = 0;
+	  
+	  if (Objects.nonNull(mot)) {
+		  connexion();
+		  String sql = "DELETE FROM Mot "
+		  		+ "WHERE Texte = ?";
+		  PreparedStatement statement = cx.prepareStatement(sql);
+		  statement.setString(1, mot);
+
+		  result = statement.executeUpdate();
+		  
+	  }
+	  
+	  return result;
+  }
   
   public static List<String> recupererPropositions(String saisie)
     throws ClassNotFoundException, SQLException {

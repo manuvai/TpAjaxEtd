@@ -144,11 +144,16 @@ function processKey() {
 			.forEach(element => {
 				let proposition = element.firstChild.nodeValue
 				let elementLi = document.createElement("li")
-				
+
 				let link = document.createElement("a")
 				link.setAttribute("href", "https://www.google.com/search?q=" + encodeURIComponent(proposition))
 
 				link.innerHTML = proposition
+				elementLi.addEventListener("contextmenu", ev => {
+					ev.preventDefault()
+					deleteMot(proposition)
+					return false
+				})
 
 				elementLi.appendChild(link)
 				listeUl.appendChild(elementLi)
@@ -158,6 +163,50 @@ function processKey() {
 		resultZone.style.display = "block"
 		
 	})
+}
+
+function deleteMot(mot) {
+	if (mot == null || mot.length == 0) {
+		return
+	}
+
+	console.log(mot)
+
+	post("ServletDelete?mot=" + encodeURI(mot), xhr => {
+		let message = getMessage(xhr)
+
+		let status = getStatus(xhr)
+
+		if (status != 200) {
+			alert(message)
+		} else {
+			alert(message)
+
+			let searchedInput = findInputByValue(mot)
+			if (searchedInput != null) {
+				let parentDiv = searchedInput.parentElement
+				parentDiv.remove()
+			}
+		}
+
+		processKey()
+
+	})
+}
+
+function findInputByValue(value) {
+	let inputs = document.querySelectorAll("#formAdd div input:not([type=button])");
+	let element = null
+
+	if (inputs != null && inputs.length > 0) {
+		let inputsFiltered = Array.from(inputs)
+			.filter(el => el.value == value)
+		element = inputsFiltered.length == 0
+			? null
+			: inputsFiltered[0]
+	}
+
+	return element
 }
 
 
