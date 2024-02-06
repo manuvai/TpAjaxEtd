@@ -42,7 +42,6 @@ public class ServletDelete extends CommonServlet {
 			responseDelete = Bd.deleteMot(mot);
 			responseStatus = 200;
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			responseDelete = 0;
 			responseStatus = 500;

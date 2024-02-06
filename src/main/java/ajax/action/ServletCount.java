@@ -20,9 +20,6 @@ public class ServletCount extends CommonServlet {
 	protected void responseGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		// TODO Terminer l'implémentation du retour de la servlet
-		// TODO Ajouter la méthode COUNT dans Bd.java /!\ Il faudra penser à nommer le COUNT
-		
 		Node responseNode = new Node("response");
 		
 		int responseStatus = 200;
