@@ -190,6 +190,7 @@ function deleteMot(mot) {
 		}
 
 		processKey()
+		updateCount()
 
 	})
 }
@@ -318,6 +319,7 @@ function addMessage() {
 			nextSpan.innerHTML = ""
 			inputTyped.focus()
 			processKey()
+			updateCount()
 
 		}
 	})
@@ -349,6 +351,19 @@ function getTagElement(xhr, tagName) {
 		: elements[0]
 }
 
+function updateCount() {
+	let divCount = document.querySelector("#container_count")
+	let spanCount = divCount.querySelector("#nb_count")
+
+	get("ServletCount", xhr => {
+		let status = getStatus(xhr)
+		let message = getMessage(xhr)
+
+		spanCount.innerHTML = message
+		divCount.style.display = 'block'
+	})
+}
+
 
 /**
  * Lancement après le chargement du DOM.
@@ -375,5 +390,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	document.querySelector("#formAdd div input[type='button']")
 		.addEventListener("click", addMessage)
+
+	document.querySelector("#container_count")
+		.style.display = 'none'
+
 
 });

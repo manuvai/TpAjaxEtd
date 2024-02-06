@@ -82,6 +82,24 @@ public class Bd {
 	  return isTexteAlreadyInTable;
   }
   
+  public static int countMessages() throws ClassNotFoundException, SQLException {
+	  int responseCount = 0;
+	  
+	  connexion();
+	  
+	  String sql = "SELECT COUNT(*) AS nb_mots "
+	  		+ "FROM Mot";
+	  
+	  PreparedStatement statement = cx.prepareStatement(sql);
+	  ResultSet resultSet = statement.executeQuery();
+	  
+	  if (resultSet.next()) {
+		  responseCount = resultSet.getInt(1);
+	  }
+	  
+	  return responseCount;
+  }
+  
   public static int ajouterMessage(String saisie) throws ClassNotFoundException, SQLException {
 	  int resultId = 0;
 	  
@@ -115,6 +133,7 @@ public class Bd {
 	  
 	  return result;
   }
+  
   
   public static List<String> recupererPropositions(String saisie)
     throws ClassNotFoundException, SQLException {
